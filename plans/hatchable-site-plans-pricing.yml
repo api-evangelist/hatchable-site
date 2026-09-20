@@ -1,0 +1,47 @@
+generated: '2026-09-19'
+method: probed
+source: https://intentguard.hatchable.site/.well-known/x402-service.json
+docs: https://intentguard.hatchable.site/llms.txt
+model: pay-per-call
+plan_count: 1
+priced_plan_count: 1
+note: >-
+  No subscription tiers, no accounts, no seats, no minimum commitment and no enterprise tier. One price is
+  attached to each paid call and quoted by the server in the 402 challenge before the caller spends anything.
+  The price below was read from the operator's own machine-readable manifest at /.well-known/x402-service.json
+  and cross-checked against openapi.json x-payment-info (amount "0.0009"), the live 402 (amount "900" in USDC
+  base units) and the homepage ("0.0009 USDC per decision · Base mainnet · no account").
+plans:
+- name: Pay-per-call
+  price: 0.0009
+  currency: USDC
+  billing_period: per-request
+  signup_required: false
+  account_required: false
+  api_key_required: false
+  settlement:
+  - USDC on Base mainnet (eip155:8453), asset 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+  facilitator: https://facilitator.payai.network
+  free_allowance: >-
+    POST /api/router-preview (free routing preview), MCP initialize + tools/list, the A2A discovery door, and
+    every discovery document (openapi.json, mcp.json, llms.txt, skill.md, router-catalog.json, /.well-known/*)
+    are free and unmetered by price.
+  overage: na
+  limits: an observed but undocumented X-RateLimit-Limit of 300 (see rate-limits/)
+per_call_prices:
+- path: /api/route
+  method: POST
+  operation: routeTask
+  mcp_tool: route_task
+  price: 0.0009 USDC
+  primary: true
+- path: /api/intent-check
+  method: POST
+  operation: checkImageIntent
+  mcp_tool: check_image_intent
+  price: 0.0009 USDC
+  legacy: true
+- path: /api/router-preview
+  method: POST
+  operation: previewModelRoute
+  price: free

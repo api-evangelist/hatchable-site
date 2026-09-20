@@ -1,0 +1,107 @@
+generated: '2026-09-19'
+method: probed
+source: direct HTTPS probe of the named /.well-known/ path list on every host this record knows
+hit_count: 4
+soft_404_control:
+  note: >-
+    intentguard.hatchable.site is a PARTIAL catch-all. A negative-control /.well-known/<random>.json returned a
+    real 404 (text/plain, 9 bytes), and every probed path ending in .json or .txt that the operator does not
+    serve also 404s - but extensionless paths (/.well-known/openid-configuration, /oauth-authorization-server,
+    /oauth-protected-resource, /api-catalog, /docs) return 200 with the 4,799-byte HTML app shell. Those four
+    are recorded below as 200 + spa-shell with no file; they are NOT documents. hatchable.site (apex) 301s
+    every path to hatchable.com, the hosting platform, whose own OAuth metadata (issuer https://hatchable.com,
+    resource https://hatchable.com/mcp) belongs to the platform's MCP server and is deliberately NOT recorded
+    as this operator's.
+hosts:
+- host: https://intentguard.hatchable.site
+  role: website + API base + MCP host + A2A host
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: hatchable-site-agent-card.json
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: hatchable-site-agent-card.json
+    note: identical body to agent-card.json (legacy path)
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: hatchable-site-ai-plugin.json
+  - path: /.well-known/x402-service.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: hatchable-site-x402-service.json
+    note: x402 2.0 service manifest; linked from llms.txt, sitemap.xml and the homepage.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html; charset=utf-8
+    real_document: false
+    result: spa-shell
+    note: 200 returning the 4,799-byte Hatchable HTML app shell, not a discovery document.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html; charset=utf-8
+    real_document: false
+    result: spa-shell
+    note: HTML app shell, not a document.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: text/html; charset=utf-8
+    real_document: false
+    result: spa-shell
+    note: HTML app shell, not a document.
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html; charset=utf-8
+    real_document: false
+    result: spa-shell
+    note: HTML app shell, not a document.
+  - path: /.well-known/mcp.json
+    status: 404
+    note: The MCP manifest is at /mcp.json (root), not under /.well-known/; saved to mcp/hatchable-site-mcp-manifest.json.
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/hatchable-site-negative-control-7f3ab91c.json
+    status: 404
+    note: negative control
+- host: https://hatchable.site
+  role: registrable domain (platform tenant apex, not operated by IntentGuard)
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 301
+    note: redirects to https://hatchable.com/.well-known/agent-card.json (404 there)
+  - path: /.well-known/agent.json
+    status: 301
+  - path: /.well-known/security.txt
+    status: 301
+  - path: /.well-known/openid-configuration
+    status: 301
+  - path: /.well-known/oauth-authorization-server
+    status: 301
+  - path: /.well-known/oauth-protected-resource
+    status: 301
+  - path: /.well-known/api-catalog
+    status: 301
+  - path: /.well-known/ai-plugin.json
+    status: 301
+  - path: /.well-known/mcp.json
+    status: 301
+- host: https://www.hatchable.site
+  documents:
+  - path: /
+    status: 404
+    note: www host answers 404 application/json for every path

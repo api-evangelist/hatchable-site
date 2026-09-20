@@ -1,0 +1,75 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://intentguard.hatchable.site/llms.txt, https://intentguard.hatchable.site/skill.md,
+  openapi/hatchable-site-openapi.yml, well-known/hatchable-site-x402-service.json, mcp/hatchable-site-tools-list.json,
+  and live 200/400/402 responses observed 2026-09-19
+docs: https://intentguard.hatchable.site/llms.txt
+auth_style:
+  model: payment-as-authorization (x402 v2)
+  header: PAYMENT-SIGNATURE
+  accounts: false
+  api_keys: false
+  see: authentication/hatchable-site-authentication.yml
+request_shape:
+  content_type: application/json
+  method: POST on every operation, including the free preview
+  required_field: task (8-16000 chars) on routeTask and previewModelRoute; user_request + agent_plan on checkImageIntent (MCP schema only)
+  enums:
+    objective: [balanced, lowest_cost, fastest, highest_quality]
+    risk_level: [low, medium, high]
+  tiers: current_model_cost_tier and budget_tier are integers 1-5
+idempotency:
+  supported: false
+  coverage: none
+  header: null
+  retention: null
+  detail: >-
+    No Idempotency-Key header, no request-id de-duplication and no documented replay window on either paid
+    operation. Retrying a /api/route call that may already have succeeded charges another 0.0009 USDC. The
+    operations create no server-side resource, so the only cost of a duplicate is the payment.
+  what_exists_instead:
+  - mechanism: EIP-3009 authorization
+    effect: >-
+      A signed x402 payment authorization is nonce-bound and single-use at the token contract, so the same
+      signed payload cannot be settled twice; it does not stop a client signing a second authorization for a
+      repeat of the same logical request. maxTimeoutSeconds is 60 on the observed challenge.
+reversibility:
+  grade: na
+  coverage: na
+  detail: >-
+    The API has no write surface in the resource sense: all three operations are stateless computations that
+    return a routing decision or a GO/FIX/ASK verdict and persist nothing the caller could later reverse. The
+    one irreversible act is the per-call USDC payment, and no refund, void or dispute path is documented for
+    it anywhere on the operator's surface. Recorded as not-applicable for resource reversibility, with the
+    payment finality stated plainly so an agent knows a paid call cannot be taken back.
+  surfaces: []
+dry_run:
+  supported: true
+  scope: routing only
+  detail: >-
+    POST /api/router-preview (previewModelRoute) is a free, unpaid rehearsal that returns task_type, complexity,
+    routing_risk and a potential_savings_percent range for the same task before the paid call is made. It is
+    not a dry run of the paid operation's full output (no model recommendation), but it is the documented
+    "look before you pay" step and llms.txt and skill.md both lead with it.
+pagination:
+  style: none
+  na: true
+versioning:
+  scheme: none-in-uri
+  current: 1.0.0
+  see: lifecycle/hatchable-site-lifecycle.yml
+error_envelope:
+  shape: '{"error": "<code>", "message": "<text>"}'
+  payment_required: x402 v2 challenge (see errors/hatchable-site-problem-types.yml)
+  rfc9457: false
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining]
+  observed_limit: 300
+  window: undocumented
+  see: rate-limits/hatchable-site-rate-limits.yml
+request_tracing:
+  header: null
+  note: No request-id header is returned; responses carry only cache-control, rate-limit and security headers plus Hatchable platform session cookies.
+field_expansion: na
+metadata: na

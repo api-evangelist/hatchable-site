@@ -1,0 +1,130 @@
+overlay: 1.0.0
+info:
+  title: IntentGuard Router API Evangelist enhancement overlay
+  version: 1.0.0
+x-generated: '2026-09-19'
+x-method: generated
+x-source: >-
+  openapi/hatchable-site-openapi.yml, enriched from mcp/hatchable-site-tools-list.json (live tools/list),
+  well-known/hatchable-site-x402-service.json and a live 402 challenge observed at POST /api/route on 2026-09-19
+x-note: >-
+  Captures the API Evangelist enhancements to the operator's published spec without mutating it. Every value
+  below was harvested from a document the operator itself publishes or from an observed live response. The
+  three substantive additions are the missing securitySchemes for the x402 PAYMENT-SIGNATURE header, a content
+  schema for the 402 challenge that both paid operations declare with no body shape, and the requestBody for
+  checkImageIntent, which the spec omits entirely and the live MCP inputSchema supplies.
+extends: openapi/hatchable-site-openapi.yml
+actions:
+- target: $.info
+  description: Add the contact and provider surfaces the spec omits but the operator publishes (agent card provider block, llms.txt).
+  update:
+    contact:
+      name: IntentGuard
+      url: https://intentguard.hatchable.site
+    x-llms-txt: https://intentguard.hatchable.site/llms.txt
+    x-agent-card: https://intentguard.hatchable.site/.well-known/agent-card.json
+    x-mcp-endpoint: https://intentguard.hatchable.site/api/mcp
+- target: $
+  description: >-
+    Add the x402 security scheme. The spec carries x-payment-info on routeTask and declares 402 on both paid
+    operations but has no components.securitySchemes, so the contract reads as an entirely open API.
+  update:
+    components:
+      securitySchemes:
+        x402:
+          type: apiKey
+          in: header
+          name: PAYMENT-SIGNATURE
+          description: >-
+            x402 v2 pay-per-call. Not a static credential - the header value is a signed, single-use, amount-bound
+            EIP-3009 payment authorization for the accepts[] entry returned in the 402 challenge (0.0009 USDC on
+            Base, eip155:8453). Observed header name from the live challenge error string
+            "PAYMENT-SIGNATURE header is required".
+      schemas:
+        X402PaymentRequired:
+          type: object
+          description: x402 v2 PaymentRequired challenge, as observed live on POST /api/route and POST /api/intent-check.
+          required: [x402Version, accepts]
+          properties:
+            x402Version: {type: integer, const: 2}
+            error: {type: string, example: PAYMENT-SIGNATURE header is required}
+            resource:
+              type: object
+              properties:
+                url: {type: string, format: uri}
+                description: {type: string}
+                mimeType: {type: string}
+                serviceName: {type: string}
+                tags: {type: array, items: {type: string}}
+            accepts:
+              type: array
+              items:
+                type: object
+                properties:
+                  scheme: {type: string, example: exact}
+                  network: {type: string, example: eip155:8453}
+                  amount: {type: string, description: USDC base units, example: '900'}
+                  asset: {type: string, example: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'}
+                  payTo: {type: string}
+                  maxTimeoutSeconds: {type: integer, example: 60}
+                  extra: {type: object}
+            extensions: {type: object, description: Bazaar discovery extension carrying the input schema and an output example.}
+        InvalidRequest:
+          type: object
+          description: Validation error envelope as observed live on POST /api/router-preview with an empty body.
+          properties:
+            error: {type: string, example: invalid_request}
+            message: {type: string, example: task is required and must contain at least 8 characters.}
+- target: $.paths['/api/route'].post
+  description: Declare the x402 requirement on the paid operation.
+  update:
+    security:
+    - x402: []
+- target: $.paths['/api/intent-check'].post
+  description: Declare the x402 requirement and add the requestBody the spec omits, taken from the live MCP tools/list inputSchema for check_image_intent.
+  update:
+    security:
+    - x402: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [user_request, agent_plan]
+            properties:
+              user_request: {type: string, minLength: 3, maxLength: 12000}
+              agent_plan: {type: string, minLength: 3, maxLength: 12000}
+              reference_notes: {type: array, maxItems: 20, items: {type: string}}
+- target: $.paths['/api/route'].post.responses['402']
+  description: Give the 402 challenge a body schema.
+  update:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/X402PaymentRequired'
+    headers:
+      payment-required:
+        description: base64 of the same challenge document
+        schema: {type: string}
+- target: $.paths['/api/intent-check'].post.responses['402']
+  description: Give the 402 challenge a body schema.
+  update:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/X402PaymentRequired'
+- target: $.paths['/api/router-preview'].post.responses['400']
+  description: Give the validation error a body schema.
+  update:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InvalidRequest'
+- target: $.paths['/api/route'].post.responses['400']
+  description: Give the validation error a body schema.
+  update:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InvalidRequest'

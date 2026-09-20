@@ -1,0 +1,48 @@
+# IntentGuard Router
+
+IntentGuard Router is a machine-payable routing service for AI agents.
+
+Before executing a task, use it to choose the lowest-cost model that can complete the work reliably.
+
+## Free preview
+POST https://intentguard.hatchable.site/api/router-preview
+
+Body:
+{
+  "task": "Debug a production API failure and propose a safe patch",
+  "objective": "balanced",
+  "risk_level": "high",
+  "needs_tools": true
+}
+
+Returns task type, complexity, routing risk and potential savings.
+
+## Paid router
+POST https://intentguard.hatchable.site/api/route
+
+MCP: https://intentguard.hatchable.site/api/mcp
+Tool: route_task
+
+Price: 0.0009 USDC per route on Base via x402.
+
+Returns:
+- recommended model
+- cheapest acceptable model
+- model to avoid
+- optimized execution prompt
+- fallback model and trigger
+- fit ranking and confidence
+- estimated dollar cost when token estimates and model prices are supplied
+
+## Optional model catalog
+Pass available_models with name, cost_tier, speed_tier, quality_tier, strengths, input_cost_per_million and output_cost_per_million.
+
+## Legacy image preflight
+Tool: check_image_intent
+HTTP: https://intentguard.hatchable.site/api/intent-check
+
+## Discovery
+- https://intentguard.hatchable.site/openapi.json
+- https://intentguard.hatchable.site/.well-known/x402-service.json
+- https://intentguard.hatchable.site/.well-known/agent-card.json
+- https://intentguard.hatchable.site/mcp.json

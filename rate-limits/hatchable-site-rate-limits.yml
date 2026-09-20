@@ -1,0 +1,42 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  live responses from https://intentguard.hatchable.site observed 2026-09-19 - POST /api/router-preview (200),
+  POST /api/route (402), POST /api/intent-check (402), POST /api/mcp tools/list (200); plus
+  https://intentguard.hatchable.site/llms.txt and skill.md, which document no limits
+limit_count: 1
+rate_limits:
+- scope: per-client (key undocumented - the counter decremented across successive anonymous requests from one IP)
+  window: undocumented
+  limit: 300
+  burst: null
+  applies_to: all observed routes, free and paid alike
+  documented: false
+  observed: true
+  note: >-
+    X-RateLimit-Limit: 300 with X-RateLimit-Remaining counting down (297 -> 294 -> 293 across this pass) was
+    present on every response, including the free preview and the MCP endpoint. Nothing on the operator's
+    surface states the window, the keying, or what happens at zero. The header pair is the Laravel default
+    throttle shape, which the hatchable-session and XSRF-TOKEN cookies also point to, so the limit is most
+    likely the hosting platform's per-minute default rather than a choice the operator documented - but that
+    is an inference and the number itself is observed.
+headers_observed:
+- X-RateLimit-Limit
+- X-RateLimit-Remaining
+headers_documented: []
+status_on_exhaustion: null
+status_on_exhaustion_note: Not observed and not documented; the OpenAPI declares no 429.
+economic_rate_limiting:
+  present: true
+  detail: >-
+    The paid routes are metered by price - 0.0009 USDC per call, quoted in the 402 challenge before any work is
+    done. There is no documented ceiling on paid volume beyond the wallet balance and the 300-request header
+    limit above.
+free_surfaces:
+- POST /api/router-preview
+- MCP initialize and tools/list
+- POST /api/a2a (discovery message)
+- GET /openapi.json, /mcp.json, /llms.txt, /skill.md, /router-catalog.json, /.well-known/*
+recommendation: >-
+  Publishing the window and the exhaustion status alongside the headers already emitted would make the existing
+  runtime signal usable by an agent; today it can read the count but not know when it resets.

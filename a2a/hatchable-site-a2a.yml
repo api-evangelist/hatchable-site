@@ -1,0 +1,79 @@
+generated: '2026-09-19'
+method: probed
+source: https://intentguard.hatchable.site/.well-known/agent-card.json
+card:
+  file: a2a/hatchable-site-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: intentguard.hatchable.site
+  also_served_at: /.well-known/agent.json
+  note: >-
+    The card is served from intentguard.hatchable.site, a tenant subdomain on Hatchable (hatchable.com), the
+    AI-app hosting platform this operator built on. The apex hatchable.site 301s to hatchable.com, which is the
+    PLATFORM's site and serves no agent card (404 on both paths). The identical card is also served at the
+    legacy /.well-known/agent.json path on the tenant host. Ownership is not in question: the card's
+    provider.organization is "IntentGuard" with provider.url https://intentguard.hatchable.site, the same host
+    that serves the OpenAPI (servers[] https://intentguard.hatchable.site), the MCP endpoint and llms.txt, and
+    the operator's own llms.txt and sitemap.xml name this exact URL.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: '1.0'
+  preferred_transport: null
+  checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+    default_input_modes_present: true
+    default_output_modes_present: true
+    preferred_transport_present: false
+    additional_interfaces_present: false
+    security_schemes_present: false
+  deviations: []
+  notes:
+  - >-
+    No preferredTransport, additionalInterfaces or securitySchemes. The single url is a JSON-RPC door (a GET
+    returns 405, a POST with an unknown method returns a JSON-RPC -32601 error). The paid HTTP and MCP surfaces
+    are x402-gated, but the card declares no security scheme for that; the A2A door itself answered
+    message/send anonymously.
+  - >-
+    The A2A door is a discovery gateway rather than the router itself: an anonymous message/send returned a
+    canned agent message describing the service and pointing at the free preview, the paid x402 endpoint and
+    the MCP tool. Routing work is done over HTTP (POST /api/route) or MCP (route_task), not over A2A.
+agent_card:
+  name: IntentGuard Router
+  description: AI task router that selects the best model, cheapest acceptable alternative, optimized prompt and fallback before execution.
+  url: https://intentguard.hatchable.site/api/a2a
+  version: 1.0.0
+  provider:
+    organization: IntentGuard
+    url: https://intentguard.hatchable.site
+  capabilities:
+    streaming: false
+    pushNotifications: false
+    stateTransitionHistory: false
+  default_input_modes: [application/json, text/plain]
+  default_output_modes: [application/json, text/plain]
+  skills: 2
+  skill_ids: [route-task, check-image-intent]
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://intentguard.hatchable.site/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 1464
+  body_parses_as: JSON object with AgentCard shape (protocolVersion, name, url, version, capabilities, skills)
+  registry_listing: https://a2aregistry.org (listed as IntentGuard Router, author IntentGuard)
+  corroborating_probes:
+  - url: https://intentguard.hatchable.site/.well-known/agent.json
+    http_status: 200
+    note: identical body at the legacy path
+  - url: https://intentguard.hatchable.site/api/a2a
+    http_status: 405
+    note: GET on the declared A2A interface returns {"error":"Method GET not allowed"}; a JSON-RPC POST is answered.
+  - url: https://hatchable.site/.well-known/agent-card.json
+    http_status: 301
+    note: apex redirects to https://hatchable.com/.well-known/agent-card.json, which is the hosting platform and returns 404
+  - url: https://hatchable.com/.well-known/agent-card.json
+    http_status: 404

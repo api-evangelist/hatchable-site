@@ -1,0 +1,23 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://intentguard.hatchable.site/ (the operator's only human page), llms.txt, skill.md, ai-plugin.json,
+  agent-card.json, x402-service.json; live probes of /accessibility, /legal/subprocessors, /legal/dpa,
+  /privacy, /terms, /transparency, /security/sbom, /ai/transparency on intentguard.hatchable.site
+signals: {}
+note: >-
+  The operator publishes a single marketing page plus machine manifests and nothing else - no privacy policy,
+  no terms, no accessibility statement, no subprocessor list, no data-residency statement, no AI transparency
+  page. Every conventional path probed on intentguard.hatchable.site returned the HTML app shell (a soft 200)
+  or 404. hatchable.com/terms and hatchable.com/privacy exist (200) but they are the HOSTING PLATFORM's legal
+  pages and are not recorded as this operator's. ai-plugin.json's legal_info_url points at the homepage and
+  contact_email is empty. An empty signals map is the measurement.
+probes:
+- url: https://intentguard.hatchable.site/.well-known/security.txt
+  status: 404
+- url: https://hatchable.com/terms
+  status: 200
+  note: platform's, not the operator's
+- url: https://hatchable.com/privacy
+  status: 200
+  note: platform's, not the operator's

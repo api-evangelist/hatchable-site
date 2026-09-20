@@ -1,0 +1,47 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://intentguard.hatchable.site/ (homepage), https://intentguard.hatchable.site/llms.txt,
+  https://intentguard.hatchable.site/skill.md, openapi/hatchable-site-openapi.yml, mcp/hatchable-site-mcp-manifest.json,
+  a2a/hatchable-site-agent-card.json
+versioning:
+  scheme: none-in-uri
+  current: 1.0.0
+  spec_version: 1.0.0
+  agent_card_version: 1.0.0
+  mcp_manifest_version: 1.0.0
+  skill_version: 1.0.0
+  note: >-
+    Every published manifest agrees on 1.0.0 (OpenAPI info.version, agent card version, mcp.json version,
+    skill.md frontmatter version, router-catalog.json). Paths carry no version segment (/api/route). No
+    versioning policy or breaking-change policy is published.
+  breaking_change_policy: null
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  deprecations_stated_in_docs:
+  - item: checkImageIntent (POST /api/intent-check) and the check_image_intent MCP tool / check-image-intent A2A skill
+    status: legacy, still served
+    replacement: null
+    sunset_date: null
+    source: openapi/hatchable-site-openapi.yml (summary "Legacy image-intent preflight"), llms.txt ("Legacy image preflight"), x402-service.json (legacy true)
+    note: >-
+      Consistently labelled legacy across four surfaces, but the OpenAPI does not set deprecated: true on the
+      operation and no sunset date or replacement is stated. The homepage says "IntentGuard Router x402 · Base ·
+      LIVE", which suggests the product pivoted from an image-intent checker to a model router and kept the
+      original endpoint. No Deprecation pointer is emitted in apis.yml because there is no policy, only a label.
+status_page:
+  url: null
+  note: >-
+    No status page is published for IntentGuard. status.hatchable.com is the hosting PLATFORM's and is not
+    recorded here as the operator's. The a2aregistry.org listing reports its own uptime monitoring but that is a
+    third-party measurement.
+sla: null
+changelog: null
+release_notes: null
+finding: >-
+  A single-version, single-operator service with no lifecycle commitments of any kind. The only forward-looking
+  signal an integrator has is that the image-intent endpoint is called legacy everywhere it appears.

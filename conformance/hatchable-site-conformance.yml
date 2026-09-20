@@ -1,0 +1,82 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  openapi/hatchable-site-openapi.yml, well-known/hatchable-site-x402-service.json, a2a/hatchable-site-agent-card.json,
+  mcp/hatchable-site-tools-list.json, mcp/hatchable-site-mcp-manifest.json, well-known/hatchable-site-ai-plugin.json,
+  https://intentguard.hatchable.site/llms.txt, and live 400/402/405 responses observed 2026-09-19
+conformance:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'openapi/hatchable-site-openapi.yml - "openapi": "3.1.0", 3 operations, servers[] https://intentguard.hatchable.site'
+- id: rfc8615-well-known
+  conforms: true
+  evidence: Agent card at /.well-known/agent-card.json (200) and /.well-known/agent.json (200); ai-plugin.json and x402-service.json also under /.well-known/.
+- id: a2a-agent-card
+  conforms: true
+  evidence: a2a/hatchable-site-a2a.yml grades the card conformant against A2A 1.0.0 (capabilities object, protocolVersion "1.0", skills array).
+- id: mcp-streamable-http
+  conforms: true
+  evidence: >-
+    POST https://intentguard.hatchable.site/api/mcp answered initialize with protocolVersion 2025-06-18 and
+    tools/list with two tools carrying JSON Schema inputSchema, without a session header.
+- id: jsonrpc-2.0
+  conforms: true
+  evidence: Both /api/mcp and /api/a2a answer JSON-RPC 2.0 envelopes; an unknown method returns the standard -32601 error object.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json anywhere; the 400 envelope is {"error","message"}.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt is 404 on intentguard.hatchable.site.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No OAuth anywhere and none expected - there are no accounts. /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource on the tenant host return the HTML app shell, not metadata. The
+    OAuth metadata at hatchable.com belongs to the hosting platform's own MCP server, not to this operator.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns the HTML app shell.
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key header or replay window documented on either paid write. See conventions/hatchable-site-conventions.yml.
+- id: pagination
+  conforms: false
+  na: true
+  evidence: No endpoint returns a collection.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset or Deprecation headers; the legacy endpoint carries no deprecated flag in the spec.
+- id: openai-plugin-manifest
+  conforms: true
+  evidence: >-
+    /.well-known/ai-plugin.json (200) carries schema_version v1, name_for_model, auth {type none} and api
+    {type openapi, url https://intentguard.hatchable.site/openapi.json}. contact_email is empty.
+domain_standards:
+- id: x402
+  name: x402 HTTP payment protocol
+  version: '2'
+  conforms: true
+  role: server
+  evidence: >-
+    The contract declares it about itself. openapi.json carries x-payment-info on routeTask (protocols [x402],
+    price 0.0009 USDC fixed, network eip155:8453, asset and payTo) and declares 402 on both paid operations.
+    A live unpaid POST to /api/route returned HTTP 402 with "x402Version": 2, a resource block, an accepts[]
+    array (scheme exact, network eip155:8453, amount 900, maxTimeoutSeconds 60) and a base64 payment-required
+    header. /.well-known/x402-service.json declares "x402": "2.0" with pricing, payment and endpoints blocks and
+    names https://facilitator.payai.network as the facilitator.
+  evidence_urls:
+  - url: https://intentguard.hatchable.site/api/route
+    status: 402
+  - url: https://intentguard.hatchable.site/api/intent-check
+    status: 402
+  - url: https://intentguard.hatchable.site/.well-known/x402-service.json
+    status: 200
+  detail: >-
+    Machine-payable HTTP for AI agents is this operator's market and it implements the server half across both
+    paid operations. The challenge carries the CDP Bazaar discovery extension (extensions.bazaar.info with the
+    input schema and an output example).
+- id: x402-bazaar
+  name: Bazaar discovery extension for x402
+  conforms: true
+  evidence: The 402 body on /api/route carries extensions.bazaar.info {input {type http, method POST, body <JSON Schema>}, output {type json, example}}.

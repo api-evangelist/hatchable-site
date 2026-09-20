@@ -1,0 +1,113 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "tools": [
+      {
+        "name": "route_task",
+        "title": "IntentGuard Router \u2014 AI Model Selection",
+        "description": "Use before executing an AI task. Selects the best model for quality, speed and cost; returns the cheapest acceptable alternative, a model to avoid, optimized prompt, fallback and savings estimate.",
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "task"
+          ],
+          "properties": {
+            "task": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 16000
+            },
+            "objective": {
+              "type": "string",
+              "enum": [
+                "balanced",
+                "lowest_cost",
+                "fastest",
+                "highest_quality"
+              ]
+            },
+            "current_model": {
+              "type": "string"
+            },
+            "current_model_cost_tier": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "budget_tier": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "risk_level": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "needs_tools": {
+              "type": "boolean"
+            },
+            "needs_vision": {
+              "type": "boolean"
+            },
+            "requirements": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 12
+            },
+            "input_tokens": {
+              "type": "integer"
+            },
+            "output_tokens": {
+              "type": "integer"
+            },
+            "available_models": {
+              "type": "array",
+              "maxItems": 20,
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "check_image_intent",
+        "title": "IntentGuard \u2014 Image Intent Preflight",
+        "description": "Use before image generation. Checks the planned render against the user's literal request and returns GO, FIX or ASK.",
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "user_request",
+            "agent_plan"
+          ],
+          "properties": {
+            "user_request": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 12000
+            },
+            "agent_plan": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 12000
+            },
+            "reference_notes": {
+              "type": "array",
+              "maxItems": 20,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

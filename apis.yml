@@ -1,18 +1,70 @@
 aid: hatchable-site
 name: IntentGuard
-description: 'IntentGuard is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry)
-  and added to the network as a stub for full-pipeline profiling.'
+description: IntentGuard operates IntentGuard Router, a machine-payable AI model-routing service for agents, hosted
+  as a tenant app at intentguard.hatchable.site on the Hatchable AI-app platform. Before executing a task an agent
+  posts it to the router, which returns the best model for quality, cost and speed, the cheapest acceptable alternative,
+  a model to avoid, an optimized execution prompt, a fallback trigger and a savings estimate. A free preview endpoint
+  returns task complexity, routing risk and a savings range; the paid route and a legacy image-intent preflight
+  cost 0.0009 USDC per call, settled on Base mainnet through the x402 v2 protocol with no account or API key. The
+  same two tools are exposed over a hosted Streamable HTTP MCP endpoint and described by a conformant A2A 1.0 agent
+  card, an OpenAPI 3.1 document, an llms.txt, an OpenAI plugin manifest, an x402 service manifest and a provider-authored
+  Agent Skill.
 url: https://raw.githubusercontent.com/api-evangelist/hatchable-site/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-19 (local-v3; was a2a-registry harvest stub)
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
-apis: []
+- AI
+- Agents
+- Model Routing
+- Cost Optimization
+- x402
+- MCP
+- A2A
+- Pay Per Call
+- Prompt Optimization
+- Agent Payments
+apis:
+- aid: hatchable-site:intentguard-router-api
+  name: IntentGuard Router API
+  description: 'x402-paid AI model routing and prompt optimization from IntentGuard - 3 operations: a free routing
+    preview (previewModelRoute), the paid router that selects the best model, cheapest acceptable alternative, fallback
+    and optimized prompt (routeTask, 0.0009 USDC on Base), and a legacy image-intent preflight returning GO, FIX
+    or ASK (checkImageIntent). Also exposed as MCP tools route_task and check_image_intent.'
+  humanURL: https://intentguard.hatchable.site/
+  baseURL: https://intentguard.hatchable.site
+  tags:
+  - Model Routing
+  - AI
+  - x402
+  - Prompt Optimization
+  properties:
+  - type: OpenAPI
+    url: openapi/hatchable-site-openapi.yml
+  - type: OpenAPI
+    url: https://intentguard.hatchable.site/openapi.json
+    name: provider-hosted original
+  - type: Documentation
+    url: https://intentguard.hatchable.site/
+  - type: MCPServer
+    url: mcp/hatchable-site-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/hatchable-site-tool-crosswalk.yml
+  - type: Overlay
+    url: overlays/hatchable-site-openapi-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/hatchable-site-problem-types.yml
+  - type: Authentication
+    url: authentication/hatchable-site-authentication.yml
+  x-base-url-note: 'repair-api-bases.py flags the base as marketing-base because the API host equals the Website
+    host. That is correct for this operator: the OpenAPI servers[] names https://intentguard.hatchable.site, llms.txt
+    and skill.md state POST https://intentguard.hatchable.site/api/route, and the host answered 200/402 on the documented
+    paths on 2026-09-19. There is no separate API host.'
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +72,46 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://hatchable.site/
+  url: https://intentguard.hatchable.site/
+- type: Documentation
+  url: https://intentguard.hatchable.site/
+- type: Pricing
+  url: https://intentguard.hatchable.site/.well-known/x402-service.json
+- type: LLMsTxt
+  url: llms/hatchable-site-llms.txt
+- type: AgentCard
+  url: a2a/hatchable-site-a2a.yml
+- type: MCPServer
+  url: mcp/hatchable-site-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/hatchable-site-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/hatchable-site-well-known.yml
+- type: Overlay
+  url: overlays/hatchable-site-openapi-overlay.yaml
+- type: Conventions
+  url: conventions/hatchable-site-conventions.yml
+- type: ErrorCatalog
+  url: errors/hatchable-site-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/hatchable-site-lifecycle.yml
+- type: Conformance
+  url: conformance/hatchable-site-conformance.yml
+- type: Plans
+  url: plans/hatchable-site-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/hatchable-site-rate-limits.yml
+- type: Authentication
+  url: authentication/hatchable-site-authentication.yml
+- type: DomainSecurity
+  url: security/hatchable-site-domain-security.yml
+x-hosting-platform: Hatchable (hatchable.com) - hatchable.site is the platform tenant apex and 301s to hatchable.com;
+  the operator controls only the intentguard.hatchable.site subdomain
+position: Producing
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v3

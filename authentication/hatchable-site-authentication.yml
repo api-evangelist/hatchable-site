@@ -1,0 +1,52 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://intentguard.hatchable.site/llms.txt, https://intentguard.hatchable.site/skill.md,
+  well-known/hatchable-site-ai-plugin.json (auth type none), well-known/hatchable-site-x402-service.json,
+  openapi/hatchable-site-openapi.yml (x-payment-info, no securitySchemes), and live 402 challenges observed at
+  POST /api/route and POST /api/intent-check on 2026-09-19
+docs: https://intentguard.hatchable.site/llms.txt
+model: payment-as-authorization
+accounts: false
+api_keys: false
+oauth: false
+summary: >-
+  There is no account, no registration, no API key and no bearer token anywhere on this surface - the homepage
+  says "no account" and ai-plugin.json declares auth type none. Authorization IS payment on the two paid
+  operations: a request without a signed payment gets HTTP 402 with an x402 v2 challenge carrying one accepts[]
+  entry (USDC on Base, 0.0009 per call, 60-second authorization timeout); the caller signs an EIP-3009
+  transferWithAuthorization for it and retries the identical request with the signed payload in a
+  PAYMENT-SIGNATURE header, settled through the facilitator at https://facilitator.payai.network. The free
+  preview, the MCP initialize/tools/list methods, the A2A discovery door and every discovery document need
+  nothing at all.
+schemes:
+- id: x402
+  type: apiKey
+  in: header
+  name: PAYMENT-SIGNATURE
+  protocol: x402 v2
+  applies_to: [routeTask, checkImageIntent, MCP tools/call]
+  network: eip155:8453
+  asset: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 (USDC on Base)
+  pay_to: '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
+  amount_per_call: 0.0009 USDC (900 base units)
+  max_timeout_seconds: 60
+  facilitator: https://facilitator.payai.network
+  description: >-
+    Modeled as an apiKey-in-header scheme because that is the closest OpenAPI primitive; it is not a static
+    credential - the header value is a signed, single-use, amount-bound payment authorization. The OpenAPI
+    declares no securitySchemes at all; overlays/hatchable-site-openapi-overlay.yaml adds this one.
+  evidence:
+    url: https://intentguard.hatchable.site/api/route
+    status: 402
+    error_string: PAYMENT-SIGNATURE header is required
+open_surfaces:
+- POST /api/router-preview (previewModelRoute)
+- POST /api/mcp - initialize, tools/list
+- POST /api/a2a - message/send answers with a discovery message
+- GET /openapi.json, /mcp.json, /llms.txt, /skill.md, /router-catalog.json, /.well-known/*
+platform_note: >-
+  The hosting platform's OAuth 2.1 metadata at https://hatchable.com/.well-known/oauth-authorization-server
+  (issuer hatchable.com, scopes_supported [mcp], resource https://hatchable.com/mcp) governs Hatchable's OWN
+  platform MCP server for building apps and has no bearing on this operator's API; it is recorded here only so
+  a later pass does not mistake it for IntentGuard's auth.

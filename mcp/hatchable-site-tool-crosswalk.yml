@@ -1,0 +1,60 @@
+generated: '2026-09-19'
+method: derived
+source: >-
+  mcp/hatchable-site-tools-list.json (live tools/list, 2 tools), openapi/hatchable-site-openapi.yml
+  (3 operations), a2a/hatchable-site-agent-card.json (2 skills), well-known/hatchable-site-x402-service.json
+  (2 paid endpoints + free preview)
+surfaces:
+  openapi:
+    url: https://intentguard.hatchable.site/openapi.json
+    file: openapi/hatchable-site-openapi.yml
+    operations: 3
+    gated: false
+  mcp:
+    url: https://intentguard.hatchable.site/api/mcp
+    transport: streamable-http
+    tools: 2
+    gated: false
+    note: initialize and tools/list are free and anonymous; tools/call is x402-paid.
+  a2a:
+    url: https://intentguard.hatchable.site/api/a2a
+    transport: JSONRPC
+    skills: 2
+    gated: false
+    note: The A2A door answers with a discovery message; it does not execute the routing itself.
+  graphql: null
+coverage:
+  mcp_tools: 2
+  bound_to_rest: 2
+  mcp_only: 0
+  rest_only: 1
+  confidence_high: 2
+  note: >-
+    Both tools bind to a real operationId and the live tools/list inputSchema for route_task is field-for-field
+    the requestBody schema of routeTask (same 12 properties, same enums and bounds, plus maxItems the OpenAPI
+    omits). The one REST-only operation is the free preview, which the MCP server does not expose.
+crosswalk:
+- tool: route_task
+  category: model-routing
+  rest: [routeTask]
+  a2a_skill: route-task
+  binding: rest
+  confidence: high
+  price_usd: 0.0009
+  note: inputSchema matches the routeTask requestBody; tools/list adds maxItems 12 on requirements and maxItems 20 on available_models.
+- tool: check_image_intent
+  category: image-intent
+  rest: [checkImageIntent]
+  a2a_skill: check-image-intent
+  binding: rest
+  confidence: high
+  price_usd: 0.0009
+  note: >-
+    The OpenAPI declares checkImageIntent with NO requestBody at all; the live MCP inputSchema is the only
+    published contract for its inputs (user_request, agent_plan required; reference_notes optional). Here the
+    tool is the richer surface, not the operation.
+mcp_only: []
+rest_only:
+- operation: previewModelRoute
+  path: POST /api/router-preview
+  reason: Free, unpaid preview of complexity, routing risk and savings; not exposed as an MCP tool.

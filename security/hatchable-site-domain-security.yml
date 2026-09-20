@@ -1,0 +1,17 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: intentguard.hatchable.site
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 18 15:43:16 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: hatchable.site
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: true
+  dmarc_policy: none

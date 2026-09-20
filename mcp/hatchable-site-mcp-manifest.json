@@ -1,0 +1,26 @@
+{
+  "name": "IntentGuard Router",
+  "version": "1.0.0",
+  "description": "Paid MCP model router and prompt optimizer for AI agents.",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://intentguard.hatchable.site/api/mcp"
+  },
+  "tools": [
+    {
+      "name": "route_task",
+      "description": "Selects the best model, cheapest acceptable alternative, optimized prompt and fallback.",
+      "price": "0.0009 USDC",
+      "network": "Base",
+      "x402": true,
+      "primary": true
+    },
+    {
+      "name": "check_image_intent",
+      "description": "Checks image-generation plans against user intent.",
+      "price": "0.0009 USDC",
+      "network": "Base",
+      "x402": true
+    }
+  ]
+}

@@ -64,5 +64,12 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-IntentGuard is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://hatchable.site/
+IntentGuard operates **IntentGuard Router**, a machine-payable AI model-routing service for agents, hosted as a tenant app at [intentguard.hatchable.site](https://intentguard.hatchable.site/) on the Hatchable platform. A free preview endpoint scores a task's complexity and routing risk; the paid router (0.0009 USDC per call over x402 on Base, no account) returns the best model, the cheapest acceptable alternative, an optimized prompt and a fallback. The same tools are exposed over a hosted MCP endpoint and described by a conformant A2A agent card.
+
+- Website: https://intentguard.hatchable.site/
+- OpenAPI: https://intentguard.hatchable.site/openapi.json
+- MCP: https://intentguard.hatchable.site/api/mcp
+- Agent card: https://intentguard.hatchable.site/.well-known/agent-card.json
+- llms.txt: https://intentguard.hatchable.site/llms.txt
+
+Note: `hatchable.site` is the hosting platform's tenant apex (it redirects to hatchable.com); the operator controls only the `intentguard.` subdomain.

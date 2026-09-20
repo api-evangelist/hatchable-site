@@ -1,0 +1,87 @@
+generated: '2026-09-19'
+method: derived
+source: >-
+  openapi/hatchable-site-openapi.yml (400/402 responses), enriched from live unauthenticated responses observed
+  on 2026-09-19 - POST /api/router-preview with {} (400), POST /api/route without payment (402),
+  POST /api/intent-check without payment (402), GET /api/a2a (405), POST /api/a2a unknown method (JSON-RPC -32601)
+format: non-rfc9457
+media_type: application/json
+rfc9457: false
+envelope:
+  validation: '{"error": "<snake_case_code>", "message": "<human sentence>"}'
+  method_not_allowed: '{"error": "Method GET not allowed"}'
+  payment_required: x402 v2 challenge object - see the 402 entry below
+  jsonrpc: '{"jsonrpc":"2.0","id":<id>,"error":{"code":-32601,"message":"Method not found"}} on /api/a2a and /api/mcp'
+  note: >-
+    No application/problem+json, no type URIs, no documentation links in any error. The 400 envelope carries a
+    stable machine code (observed: invalid_request) and a free-text message; the OpenAPI declares the 400 and
+    402 responses with a description and no content schema, so neither shape is in the contract.
+problem_types:
+- status: 400
+  code: invalid_request
+  title: Invalid request
+  operations: [previewModelRoute, routeTask]
+  declared_media_type: null
+  declared_schema: null
+  retryable: false
+  meaning: The request body failed validation - observed for a missing task.
+  example: '{"error":"invalid_request","message":"task is required and must contain at least 8 characters."}'
+  remediation: Send a JSON body with task (string, 8-16000 chars); optional fields are bounded as in the requestBody schema.
+  evidence:
+    url: https://intentguard.hatchable.site/api/router-preview
+    method: POST
+    body: '{}'
+    status: 400
+- status: 402
+  title: Payment Required
+  operations: [routeTask, checkImageIntent]
+  declared_media_type: null
+  declared_schema: null
+  format: x402 v2 PaymentRequired challenge
+  retryable: true
+  is_an_error: false
+  meaning: >-
+    Not a failure - the normal first half of every paid call. The body carries x402Version 2, an error string
+    ("PAYMENT-SIGNATURE header is required"), a resource block (url, description, mimeType, serviceName, tags)
+    and an accepts[] array with one settlement option: scheme exact, network eip155:8453, amount "900" (USDC
+    base units = 0.0009 USDC), asset 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo
+    0xcd461ac1783b22c4610d1d34f8fb01063532cb9e, maxTimeoutSeconds 60. An extensions.bazaar.info block carries the
+    input JSON Schema (identical to the OpenAPI requestBody) and an output example.
+  remediation: >-
+    Sign an EIP-3009 transferWithAuthorization for the accepts[0] entry and retry the identical request with the
+    signed payload in a PAYMENT-SIGNATURE header. The facilitator named in /.well-known/x402-service.json is
+    https://facilitator.payai.network.
+  response_headers:
+  - name: payment-required
+    value: base64 of the same challenge document
+  spec_defect: >-
+    Both paid operations declare 402 with a description and NO content block, so the response every caller must
+    parse to pay has no schema in the contract. It is observable live and its input half is repeated inside the
+    challenge's bazaar extension.
+  evidence:
+    url: https://intentguard.hatchable.site/api/route
+    method: POST
+    status: 402
+- status: 405
+  title: Method not allowed
+  operations: []
+  meaning: GET on /api/a2a or /api/mcp - both are POST-only JSON-RPC doors.
+  example: '{"error":"Method GET not allowed"}'
+  evidence:
+    url: https://intentguard.hatchable.site/api/a2a
+    method: GET
+    status: 405
+- status: 429
+  title: Too Many Requests
+  operations: []
+  declared: false
+  observed: false
+  note: >-
+    Not declared in the OpenAPI and not observed, but every response carries X-RateLimit-Limit: 300 and a
+    decrementing X-RateLimit-Remaining, so a 429 almost certainly exists. Recorded as undocumented - see
+    rate-limits/hatchable-site-rate-limits.yml.
+- status: 500
+  title: Server error
+  operations: []
+  declared: false
+  note: No 5xx response is declared anywhere in the contract.

@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "IntentGuard Router",
+  "name_for_model": "intentguard_router",
+  "description_for_human": "Choose the right AI model before spending.",
+  "description_for_model": "Use route_task before executing an AI task to select the best model, cheapest acceptable alternative, optimized prompt and fallback. Free preview is available at /api/router-preview; paid routing costs 0.0009 USDC via x402 on Base.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://intentguard.hatchable.site/openapi.json"
+  },
+  "logo_url": "https://intentguard.hatchable.site/",
+  "contact_email": "",
+  "legal_info_url": "https://intentguard.hatchable.site/"
+}

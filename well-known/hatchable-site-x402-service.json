@@ -1,0 +1,41 @@
+{
+  "x402": "2.0",
+  "name": "intentguard-router",
+  "description": "Route every AI task to the lowest-cost model that can complete it reliably.",
+  "capabilities": [
+    "ai",
+    "model-routing",
+    "cost-optimization",
+    "prompt-optimization",
+    "image-intent-validation"
+  ],
+  "pricing": {
+    "currency": "USDC",
+    "base": "0.0009",
+    "unit": "request"
+  },
+  "payment": {
+    "address": "0xcd461ac1783b22c4610d1d34f8fb01063532cb9e",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "facilitator": "https://facilitator.payai.network"
+  },
+  "endpoints": [
+    {
+      "name": "route_task",
+      "url": "https://intentguard.hatchable.site/api/route",
+      "method": "POST",
+      "price": "0.0009 USDC",
+      "primary": true
+    },
+    {
+      "name": "check_image_intent",
+      "url": "https://intentguard.hatchable.site/api/intent-check",
+      "method": "POST",
+      "price": "0.0009 USDC",
+      "legacy": true
+    }
+  ],
+  "free_preview": "https://intentguard.hatchable.site/api/router-preview",
+  "mcp": "https://intentguard.hatchable.site/api/mcp"
+}
