@@ -19,6 +19,18 @@ created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
+- Artificial Intelligence
+- Agents
+- Model Routing
+- Cost Optimization
+- x402
+- MCP
+- A2A
+- pay-per-call
+- Prompt Optimization
+- Agent Payments
+tags_raw:
+- Company
 - AI
 - Agents
 - Model Routing
@@ -39,6 +51,11 @@ apis:
   humanURL: https://intentguard.hatchable.site/
   baseURL: https://intentguard.hatchable.site
   tags:
+  - Model Routing
+  - Artificial Intelligence
+  - x402
+  - Prompt Optimization
+  tags_raw:
   - Model Routing
   - AI
   - x402
