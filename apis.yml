@@ -28,7 +28,7 @@ tags:
 - A2A
 - pay-per-call
 - Prompt Optimization
-- Agent Payments
+- Agentic Payments
 tags_raw:
 - Company
 - AI
@@ -42,46 +42,57 @@ tags_raw:
 - Prompt Optimization
 - Agent Payments
 apis:
-- aid: hatchable-site:intentguard-router-api
-  name: IntentGuard Router API
-  description: 'x402-paid AI model routing and prompt optimization from IntentGuard - 3 operations: a free routing
-    preview (previewModelRoute), the paid router that selects the best model, cheapest acceptable alternative, fallback
-    and optimized prompt (routeTask, 0.0009 USDC on Base), and a legacy image-intent preflight returning GO, FIX
-    or ASK (checkImageIntent). Also exposed as MCP tools route_task and check_image_intent.'
+- aid: hatchable-site:hatchable-site-intent-check-api
+  name: IntentGuard Intent Check API
+  description: The Intent Check API from IntentGuard — 1 operation(s) for intent check.
   humanURL: https://intentguard.hatchable.site/
-  baseURL: https://intentguard.hatchable.site
   tags:
-  - Model Routing
-  - Artificial Intelligence
-  - x402
-  - Prompt Optimization
-  tags_raw:
-  - Model Routing
-  - AI
-  - x402
-  - Prompt Optimization
+  - Intent Check
   properties:
   - type: OpenAPI
-    url: openapi/hatchable-site-openapi.yml
-  - type: OpenAPI
-    url: https://intentguard.hatchable.site/openapi.json
-    name: provider-hosted original
+    url: openapi/hatchable-site-intent-check-api-openapi.yml
   - type: Documentation
     url: https://intentguard.hatchable.site/
-  - type: MCPServer
-    url: mcp/hatchable-site-mcp.yml
   - type: ToolCrosswalk
     url: mcp/hatchable-site-tool-crosswalk.yml
-  - type: Overlay
-    url: overlays/hatchable-site-openapi-overlay.yaml
   - type: ErrorCatalog
     url: errors/hatchable-site-problem-types.yml
   - type: Authentication
     url: authentication/hatchable-site-authentication.yml
-  x-base-url-note: 'repair-api-bases.py flags the base as marketing-base because the API host equals the Website
-    host. That is correct for this operator: the OpenAPI servers[] names https://intentguard.hatchable.site, llms.txt
-    and skill.md state POST https://intentguard.hatchable.site/api/route, and the host answered 200/402 on the documented
-    paths on 2026-09-19. There is no separate API host.'
+- aid: hatchable-site:hatchable-site-route-api
+  name: IntentGuard Route API
+  description: The Route API from IntentGuard — 1 operation(s) for route.
+  humanURL: https://intentguard.hatchable.site/
+  tags:
+  - Route
+  properties:
+  - type: OpenAPI
+    url: openapi/hatchable-site-route-api-openapi.yml
+  - type: Documentation
+    url: https://intentguard.hatchable.site/
+  - type: ToolCrosswalk
+    url: mcp/hatchable-site-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/hatchable-site-problem-types.yml
+  - type: Authentication
+    url: authentication/hatchable-site-authentication.yml
+- aid: hatchable-site:hatchable-site-router-preview-api
+  name: IntentGuard Router Preview API
+  description: The Router Preview API from IntentGuard — 1 operation(s) for router preview.
+  humanURL: https://intentguard.hatchable.site/
+  tags:
+  - Router Preview
+  properties:
+  - type: OpenAPI
+    url: openapi/hatchable-site-router-preview-api-openapi.yml
+  - type: Documentation
+    url: https://intentguard.hatchable.site/
+  - type: ToolCrosswalk
+    url: mcp/hatchable-site-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/hatchable-site-problem-types.yml
+  - type: Authentication
+    url: authentication/hatchable-site-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -132,3 +143,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 26
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://intentguard.hatchable.site/.well-known/agent-card.json"
+  grade: "near-conformant"
+  protocol_version: "1.0"
+  control: 404

@@ -1,0 +1,52 @@
+openapi: 3.2.0
+info:
+  title: Hatchable Site Router Preview API
+  version: 1.0.0
+  description: 'Operations tagged Router Preview across 2 of this provider''s published API definitions: hatchable-site-openapi.json, hatchable-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://intentguard.hatchable.site
+tags:
+- name: Router Preview
+paths:
+  /api/router-preview:
+    post:
+      operationId: previewModelRoute
+      summary: Free preview of task complexity, routing risk and potential savings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - task
+              properties:
+                task:
+                  type: string
+                objective:
+                  type: string
+                  enum:
+                  - balanced
+                  - lowest_cost
+                  - fastest
+                  - highest_quality
+                current_model_cost_tier:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        '200':
+          description: Free routing preview
+        '400':
+          description: Invalid request
+      tags:
+      - Router Preview
+    servers:
+    - url: https://intentguard.hatchable.site
+x-refined-from:
+- hatchable-site-openapi.json
+- hatchable-site-openapi.yml
+x-discovery:
+  ownershipProofs:
+  - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
+  mcp: https://intentguard.hatchable.site/api/mcp

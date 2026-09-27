@@ -1,0 +1,147 @@
+# x-archived-from: hatchable-site-openapi.yml
+# x-archived-on: 2026-09-26
+openapi: 3.1.0
+info:
+  title: IntentGuard Router API
+  version: 1.0.0
+  description: x402-paid AI model routing and prompt optimization. Select the best model, cheapest acceptable
+    alternative, fallback, and optimized prompt before execution.
+servers:
+- url: https://intentguard.hatchable.site
+paths:
+  /api/router-preview:
+    post:
+      operationId: previewModelRoute
+      summary: Free preview of task complexity, routing risk and potential savings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - task
+              properties:
+                task:
+                  type: string
+                objective:
+                  type: string
+                  enum:
+                  - balanced
+                  - lowest_cost
+                  - fastest
+                  - highest_quality
+                current_model_cost_tier:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        '200':
+          description: Free routing preview
+        '400':
+          description: Invalid request
+  /api/route:
+    post:
+      operationId: routeTask
+      summary: Select the best AI model and optimize task execution
+      description: Requires 0.0009 USDC on Base mainnet via x402 V2.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - task
+              properties:
+                task:
+                  type: string
+                  minLength: 8
+                  maxLength: 16000
+                objective:
+                  type: string
+                  enum:
+                  - balanced
+                  - lowest_cost
+                  - fastest
+                  - highest_quality
+                current_model:
+                  type: string
+                current_model_cost_tier:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                budget_tier:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                risk_level:
+                  type: string
+                  enum:
+                  - low
+                  - medium
+                  - high
+                needs_tools:
+                  type: boolean
+                needs_vision:
+                  type: boolean
+                requirements:
+                  type: array
+                  items:
+                    type: string
+                input_tokens:
+                  type: integer
+                output_tokens:
+                  type: integer
+                available_models:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      cost_tier:
+                        type: integer
+                      speed_tier:
+                        type: integer
+                      quality_tier:
+                        type: integer
+                      strengths:
+                        type: array
+                        items:
+                          type: string
+                      input_cost_per_million:
+                        type: number
+                      output_cost_per_million:
+                        type: number
+      responses:
+        '200':
+          description: Model route, optimized prompt, fallback and savings
+        '400':
+          description: Invalid request
+        '402':
+          description: x402 payment required
+      x-payment-info:
+        protocols:
+        - x402
+        price:
+          mode: fixed
+          currency: USDC
+          amount: '0.0009'
+        network: eip155:8453
+        asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+        payTo: '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
+  /api/intent-check:
+    post:
+      operationId: checkImageIntent
+      summary: Legacy image-intent preflight
+      description: Requires 0.0009 USDC via x402.
+      responses:
+        '200':
+          description: GO, FIX or ASK
+        '402':
+          description: x402 payment required
+x-discovery:
+  ownershipProofs:
+  - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
+  mcp: https://intentguard.hatchable.site/api/mcp

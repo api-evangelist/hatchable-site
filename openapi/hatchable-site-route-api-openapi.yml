@@ -1,43 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: IntentGuard Router API
+  title: Hatchable Site Route API
   version: 1.0.0
-  description: x402-paid AI model routing and prompt optimization. Select the best model, cheapest acceptable
-    alternative, fallback, and optimized prompt before execution.
+  description: 'Operations tagged Route across 2 of this provider''s published API definitions: hatchable-site-openapi.json, hatchable-site-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://intentguard.hatchable.site
+tags:
+- name: Route
 paths:
-  /api/router-preview:
-    post:
-      operationId: previewModelRoute
-      summary: Free preview of task complexity, routing risk and potential savings
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - task
-              properties:
-                task:
-                  type: string
-                objective:
-                  type: string
-                  enum:
-                  - balanced
-                  - lowest_cost
-                  - fastest
-                  - highest_quality
-                current_model_cost_tier:
-                  type: integer
-                  minimum: 1
-                  maximum: 5
-      responses:
-        '200':
-          description: Free routing preview
-        '400':
-          description: Invalid request
   /api/route:
     post:
       operationId: routeTask
@@ -129,16 +99,13 @@ paths:
         network: eip155:8453
         asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
         payTo: '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
-  /api/intent-check:
-    post:
-      operationId: checkImageIntent
-      summary: Legacy image-intent preflight
-      description: Requires 0.0009 USDC via x402.
-      responses:
-        '200':
-          description: GO, FIX or ASK
-        '402':
-          description: x402 payment required
+      tags:
+      - Route
+    servers:
+    - url: https://intentguard.hatchable.site
+x-refined-from:
+- hatchable-site-openapi.json
+- hatchable-site-openapi.yml
 x-discovery:
   ownershipProofs:
   - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'

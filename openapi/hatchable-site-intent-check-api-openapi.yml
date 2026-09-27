@@ -1,0 +1,31 @@
+openapi: 3.2.0
+info:
+  title: Hatchable Site Intent Check API
+  version: 1.0.0
+  description: 'Operations tagged Intent Check across 2 of this provider''s published API definitions: hatchable-site-openapi.json, hatchable-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://intentguard.hatchable.site
+tags:
+- name: Intent Check
+paths:
+  /api/intent-check:
+    post:
+      operationId: checkImageIntent
+      summary: Legacy image-intent preflight
+      description: Requires 0.0009 USDC via x402.
+      responses:
+        '200':
+          description: GO, FIX or ASK
+        '402':
+          description: x402 payment required
+      tags:
+      - Intent Check
+    servers:
+    - url: https://intentguard.hatchable.site
+x-refined-from:
+- hatchable-site-openapi.json
+- hatchable-site-openapi.yml
+x-discovery:
+  ownershipProofs:
+  - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
+  mcp: https://intentguard.hatchable.site/api/mcp
