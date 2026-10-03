@@ -1,20 +1,18 @@
 {
   "provider": "hatchable-site",
   "sources": [
-    "_original/hatchable-site-openapi.json",
-    "hatchable-site-openapi.yml"
+    "_original/hatchable-site-openapi.json"
   ],
   "outputs": [
     "hatchable-site-intent-check-api-openapi.yml",
     "hatchable-site-route-api-openapi.yml",
     "hatchable-site-router-preview-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/hatchable-site-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "hatchable-site-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "hatchable-site-openapi.json: tagged paths POST /api/router-preview -> Router Preview",
@@ -23,17 +21,12 @@
     "hatchable-site-openapi.json: declared missing tag: Intent Check",
     "hatchable-site-openapi.json: declared missing tag: Route",
     "hatchable-site-openapi.json: declared missing tag: Router Preview",
-    "hatchable-site-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "hatchable-site-openapi.yml: tagged paths POST /api/router-preview -> Router Preview",
-    "hatchable-site-openapi.yml: tagged paths POST /api/route -> Route",
-    "hatchable-site-openapi.yml: tagged paths POST /api/intent-check -> Intent Check",
-    "hatchable-site-openapi.yml: declared missing tag: Intent Check",
-    "hatchable-site-openapi.yml: declared missing tag: Route",
-    "hatchable-site-openapi.yml: declared missing tag: Router Preview",
-    "tag 'Intent Check' spans 2 source specs (hatchable-site-openapi.json, hatchable-site-openapi.yml): per-path servers applied",
-    "tag 'Route' spans 2 source specs (hatchable-site-openapi.json, hatchable-site-openapi.yml): per-path servers applied",
-    "tag 'Router Preview' spans 2 source specs (hatchable-site-openapi.json, hatchable-site-openapi.yml): per-path servers applied",
-    "apis.yml register: written (+3 apis, 3 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/hatchable-site-openapi.yml: archived document superseded by a larger archived document",
+    "hatchable-site-intent-check-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hatchable-site-route-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hatchable-site-router-preview-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

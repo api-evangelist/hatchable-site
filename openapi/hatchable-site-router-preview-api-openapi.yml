@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Hatchable Site Router Preview API
+  title: IntentGuard Router Router Preview API
   version: 1.0.0
-  description: 'Operations tagged Router Preview across 2 of this provider''s published API definitions: hatchable-site-openapi.json, hatchable-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: x402-paid AI model routing and prompt optimization. Select the best model, cheapest acceptable alternative, fallback, and optimized prompt before execution.
 servers:
 - url: https://intentguard.hatchable.site
 tags:
@@ -41,11 +41,6 @@ paths:
           description: Invalid request
       tags:
       - Router Preview
-    servers:
-    - url: https://intentguard.hatchable.site
-x-refined-from:
-- hatchable-site-openapi.json
-- hatchable-site-openapi.yml
 x-discovery:
   ownershipProofs:
   - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
