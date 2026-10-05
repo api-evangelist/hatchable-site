@@ -1,0 +1,12 @@
+{
+ "url": "https://intentguard.hatchable.site/openapi.json",
+ "requested_url": "https://intentguard.hatchable.site/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 6336,
+ "sha256": "7738b49135a26748c847feb9684e924dc0da772012f9dd4c8c639cc668bbfb36",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
