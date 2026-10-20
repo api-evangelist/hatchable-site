@@ -9,12 +9,11 @@ deployment:
   package: null
   auth: none
   verified: probed
-  note: >-
-    Hosted Streamable HTTP endpoint only; no stdio package is published on npm or PyPI (the npm packages named
-    "intentguard" belong to unrelated projects). initialize and tools/list answer anonymously with no session
-    handshake required. tools/call is x402-paid per call (0.0009 USDC on Base) - the server's own initialize
-    instructions state "Each call costs 0.0009 USDC via x402 on Base", so auth: none describes discovery, not
-    execution. A GET on the endpoint returns 405.
+  note: 'Hosted Streamable HTTP endpoint only; no stdio package is published on npm or PyPI (the npm packages
+    named "intentguard" belong to unrelated projects). initialize and tools/list answer anonymously with
+    no session handshake required. tools/call is x402-paid per call (0.0009 USDC on Base) - the server''s
+    own initialize instructions state "Each call costs 0.0009 USDC via x402 on Base", so auth: none describes
+    discovery, not execution. A GET on the endpoint returns 405.'
   checked: '2026-09-19'
 server:
   name: IntentGuard Router
@@ -27,22 +26,23 @@ server:
   protocol_version: '2025-06-18'
   capabilities:
     tools: true
-  instructions: >-
-    Use route_task before selecting an AI model. It recommends the best model, cheapest acceptable alternative,
-    optimized prompt and fallback. Use check_image_intent before paid image rendering. Each call costs 0.0009
-    USDC via x402 on Base.
+  instructions: Use route_task before selecting an AI model. It recommends the best model, cheapest acceptable
+    alternative, optimized prompt and fallback. Use check_image_intent before paid image rendering. Each
+    call costs 0.0009 USDC via x402 on Base.
 authentication:
   type: x402
   header: PAYMENT-SIGNATURE
-  free_methods: [initialize, tools/list]
-  paid_methods: [tools/call]
+  free_methods:
+  - initialize
+  - tools/list
+  paid_methods:
+  - tools/call
   price_per_call: 0.0009 USDC
   network: eip155:8453 (Base mainnet)
-  note: >-
-    Stated by the provider in mcp.json (x402: true on both tools), in the initialize instructions and in
-    llms.txt. The paid tools/call flow was NOT exercised by this pass - no payment was made - so the exact
-    shape in which the MCP layer surfaces the 402 challenge is unobserved. The HTTP surface's 402 is recorded
-    in errors/hatchable-site-problem-types.yml.
+  note: 'Stated by the provider in mcp.json (x402: true on both tools), in the initialize instructions
+    and in llms.txt. The paid tools/call flow was NOT exercised by this pass - no payment was made - so
+    the exact shape in which the MCP layer surfaces the 402 challenge is unobserved. The HTTP surface''s
+    402 is recorded in errors/hatchable-site-problem-types.yml.'
 probe:
   method: tools/list
   http_status: 200
@@ -50,21 +50,49 @@ probe:
   input_schemas_present: true
   fetched: '2026-09-19'
   file: mcp/hatchable-site-tools-list.json
-  headers_observed: [X-RateLimit-Limit: 300, X-RateLimit-Remaining]
+  headers_observed:
+  - X-RateLimit-Limit: 300
+  - X-RateLimit-Remaining
 tools:
 - name: route_task
   title: IntentGuard Router - AI Model Selection
-  description: >-
-    Use before executing an AI task. Selects the best model for quality, speed and cost; returns the cheapest
-    acceptable alternative, a model to avoid, optimized prompt, fallback and savings estimate.
-  required: [task]
+  description: Use before executing an AI task. Selects the best model for quality, speed and cost; returns
+    the cheapest acceptable alternative, a model to avoid, optimized prompt, fallback and savings estimate.
+  required:
+  - task
   price: 0.0009 USDC
   source_operation: openapi/hatchable-site-openapi.yml#routeTask
 - name: check_image_intent
   title: IntentGuard - Image Intent Preflight
-  description: >-
-    Use before image generation. Checks the planned render against the user's literal request and returns GO,
-    FIX or ASK.
-  required: [user_request, agent_plan]
+  description: Use before image generation. Checks the planned render against the user's literal request
+    and returns GO, FIX or ASK.
+  required:
+  - user_request
+  - agent_plan
   price: 0.0009 USDC
   source_operation: openapi/hatchable-site-openapi.yml#checkImageIntent
+tool_quality:
+  tool_count: 2
+  tokens_total: 418
+  tokens_per_tool_median: 209
+  heavy_tools: []
+  heavy_tool_count: 0
+  params_total: 15
+  params_undescribed: 15
+  params_described_pct: 0.0
+  tools_with_undescribed_params: 2
+  tools_annotated: 0
+  annotated_pct: 0.0
+  state_changing_unhinted: []
+  tools_missing_schema: 0
+  short_descriptions: 0
+  duplicate_descriptions: 0
+  duplicate_names: 0
+  nonportable_names: []
+  output_schema_count: 0
+  token_estimate: chars/3.6 of each compact tool definition
+  source: mcp/hatchable-site-tools-list.json
+  measured: '2026-10-20'
+  scored: false
+  note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
+    from Glimind's agent-readiness audit.

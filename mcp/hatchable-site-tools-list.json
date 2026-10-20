@@ -1,11 +1,17 @@
 {
-  "jsonrpc": "2.0",
-  "id": 1,
+  "endpoint": "https://intentguard.hatchable.site/api/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "IntentGuard Router",
+    "version": "1.0.0"
+  },
   "result": {
     "tools": [
       {
         "name": "route_task",
-        "title": "IntentGuard Router \u2014 AI Model Selection",
+        "title": "IntentGuard Router — AI Model Selection",
         "description": "Use before executing an AI task. Selects the best model for quality, speed and cost; returns the cheapest acceptable alternative, a model to avoid, optimized prompt, fallback and savings estimate.",
         "inputSchema": {
           "type": "object",
@@ -79,7 +85,7 @@
       },
       {
         "name": "check_image_intent",
-        "title": "IntentGuard \u2014 Image Intent Preflight",
+        "title": "IntentGuard — Image Intent Preflight",
         "description": "Use before image generation. Checks the planned render against the user's literal request and returns GO, FIX or ASK.",
         "inputSchema": {
           "type": "object",
