@@ -55,17 +55,17 @@ probe:
   - X-RateLimit-Remaining
 tools:
 - name: route_task
-  title: IntentGuard Router - AI Model Selection
   description: Use before executing an AI task. Selects the best model for quality, speed and cost; returns
     the cheapest acceptable alternative, a model to avoid, optimized prompt, fallback and savings estimate.
+  title: IntentGuard Router - AI Model Selection
   required:
   - task
   price: 0.0009 USDC
   source_operation: openapi/hatchable-site-openapi.yml#routeTask
 - name: check_image_intent
-  title: IntentGuard - Image Intent Preflight
   description: Use before image generation. Checks the planned render against the user's literal request
     and returns GO, FIX or ASK.
+  title: IntentGuard - Image Intent Preflight
   required:
   - user_request
   - agent_plan
@@ -96,3 +96,4 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools_count: 2
