@@ -105,3 +105,9 @@ x-discovery:
   ownershipProofs:
   - '0xcd461ac1783b22c4610d1d34f8fb01063532cb9e'
   mcp: https://intentguard.hatchable.site/api/mcp
+x-provenance:
+  method: harvested
+  publisher: IntentGuard
+  source: https://intentguard.hatchable.site/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
