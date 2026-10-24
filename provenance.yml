@@ -24,7 +24,10 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  integrations/hatchable-site-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-19T193153.yml:
@@ -57,6 +60,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/hatchable-site-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -77,9 +95,19 @@ artifacts:
     evidence: no authorship recorded
   openapi/_original/hatchable-site-openapi.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
-  openapi/hatchable-site-openapi.yml:
+    evidence: byte-identical to https://intentguard.hatchable.site/openapi.json (sha256 7738b49135a2,
+      fetched 2026-10-04)
+  openapi/_original/hatchable-site-openapi.yml:
+    method: harvested
+    evidence: the same operations as https://intentguard.hatchable.site/openapi.json (sha256 7738b49135a2,
+      fetched 2026-10-04)
+  openapi/hatchable-site-intent-check-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/hatchable-site-route-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/hatchable-site-router-preview-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   overlays/hatchable-site-openapi-overlay.yaml:
