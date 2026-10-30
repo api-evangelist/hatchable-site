@@ -64,12 +64,115 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-IntentGuard operates **IntentGuard Router**, a machine-payable AI model-routing service for agents, hosted as a tenant app at [intentguard.hatchable.site](https://intentguard.hatchable.site/) on the Hatchable platform. A free preview endpoint scores a task's complexity and routing risk; the paid router (0.0009 USDC per call over x402 on Base, no account) returns the best model, the cheapest acceptable alternative, an optimized prompt and a fallback. The same tools are exposed over a hosted MCP endpoint and described by a conformant A2A agent card.
+IntentGuard operates IntentGuard Router, a machine-payable AI model-routing service for agents, hosted as a tenant app at intentguard.hatchable.site on the Hatchable AI-app platform. Before executing a task an agent posts it to the router, which returns the best model for quality, cost and speed, the cheapest acceptable alternative, a model to avoid, an optimized execution prompt, a fallback trigger and a savings estimate. A free preview endpoint returns task complexity, routing risk and a savings range; the paid route and a legacy image-intent preflight cost 0.0009 USDC per call, settled on Base mainnet through the x402 v2 protocol with no account or API key. The same two tools are exposed over a hosted Streamable HTTP MCP endpoint and described by a conformant A2A 1.0 agent card, an OpenAPI 3.1 document, an llms.txt, an OpenAI plugin manifest, an x402 service manifest and a provider-authored Agent Skill.
 
-- Website: https://intentguard.hatchable.site/
-- OpenAPI: https://intentguard.hatchable.site/openapi.json
-- MCP: https://intentguard.hatchable.site/api/mcp
-- Agent card: https://intentguard.hatchable.site/.well-known/agent-card.json
-- llms.txt: https://intentguard.hatchable.site/llms.txt
+**Areas:** Company · Artificial Intelligence · Agents · Model Routing · Cost Optimization · x402 · MCP · A2A · pay-per-call · Prompt Optimization · Agentic Payments
 
-Note: `hatchable.site` is the hosting platform's tenant apex (it redirects to hatchable.com); the operator controls only the `intentguard.` subdomain.
+## IntentGuard on APIs.io
+
+Everything profiled for IntentGuard is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/hatchable-site/](https://apis.io/providers/hatchable-site/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [IntentGuard Intent Check API](https://apis.io/apis/hatchable-site/hatchable-site-intent-check-api/) — The Intent Check API from IntentGuard — 1 operation(s) for intent check.
+- [IntentGuard Route API](https://apis.io/apis/hatchable-site/hatchable-site-route-api/) — The Route API from IntentGuard — 1 operation(s) for route.
+- [IntentGuard Router Preview API](https://apis.io/apis/hatchable-site/hatchable-site-router-preview-api/) — The Router Preview API from IntentGuard — 1 operation(s) for router preview.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [IntentGuard Router](https://apis.io/servers/hatchable-site/intentguard-router/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Hatchable Site Openapi Overlay](https://apis.io/overlays/hatchable-site/hatchable-site-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Hatchable Site Authentication](https://apis.io/security/hatchable-site/hatchable-site-authentication/)
+- [Hatchable Site Domain Security](https://apis.io/security/hatchable-site/hatchable-site-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Hatchable Site Plans Pricing](https://apis.io/plans/hatchable-site/hatchable-site-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Hatchable Site Rate Limits](https://apis.io/rate-limits/hatchable-site/hatchable-site-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://intentguard.hatchable.site/)
+- [Documentation](https://intentguard.hatchable.site/)
+- [Pricing](https://intentguard.hatchable.site/.well-known/x402-service.json)
+- [Blog](https://intentguard.hatchable.site/blog/)
+
+## API Evangelist rating
+
+**Kin Score 31.2** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 63.3 |
+| Contract quality | 43.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 21.4 |
+| Access clarity | 31.6 |
+
+**Agent readiness 31.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 14.2** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/hatchable-site/](https://apis.io/providers/hatchable-site/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for IntentGuard: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/hatchable-site/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
